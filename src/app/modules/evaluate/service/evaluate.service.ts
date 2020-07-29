@@ -11,6 +11,7 @@ import { Observable, of, throwError } from 'rxjs'
 import { catchError, flatMap, tap } from 'rxjs/operators'
 import { EvaluateUserSettings } from '../component/evaluate-settings/evaluate-settings.component'
 import { EvaluateDialogService } from './evaluate-dialog.service'
+import ItemEval from './itemEval.js'
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,16 @@ export class EvaluateService {
       flatMap(({ code, point, item }) => {
         switch (code) {
           case ItemClipboardResultCode.Success:
+            const itemEval = new ItemEval('C:\\ProgramData\\Path of Building Community\\')
+            itemEval.build =
+              'C:/Users/Leonel/Documents/Path of Building/Builds/Harvest/Estilinger.xml'
+
+            item.tooltip = 'loading...'
+            itemEval.ready.then(() => {
+              itemEval.evalItem(item.source).then((t) => {
+                item.tooltip = t
+              })
+            })
             return this.evaluateDialog.open(point, item, settings, language).pipe(
               flatMap((result) => {
                 if (!result) {

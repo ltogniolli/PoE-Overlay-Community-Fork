@@ -21,6 +21,7 @@ export interface Item {
   stats?: ItemStat[]
   influences?: ItemInfluences
   note?: string
+  tooltip?: string
 }
 
 export interface ItemValue {
